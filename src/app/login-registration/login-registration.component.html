@@ -1,0 +1,19 @@
+<section>
+  <div class="content">
+    <div class="logo">
+      <img class="logo" src="../../assets/logo.svg" />
+    </div>
+    <form class="form-login" *ngIf="typeMethod != 'sign-up'">
+      <input type="email" name="email" placeholder="Email" />
+      <input type="password" name="password" placeholder="Password" />
+      <button>Login</button>
+    </form>
+    <form class="form-login" *ngIf="typeMethod == 'sign-up'">
+      <input type="text" name="name" placeholder="Full Name" />
+      <input type="email" name="email" placeholder="Email" />
+      <input type="password" name="password" placeholder="Password" />
+      <button>Sign up</button>
+    </form>
+  </div>
+  <p class="change-method-login"><a>{{typeMethod == 'sign-up' ? 'Sign In' : 'Sign Up'}}</a></p>
+</section>
