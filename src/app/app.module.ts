@@ -4,16 +4,23 @@ import { RouterModule } from '@angular/router';
 
 import { AppComponent } from './app.component';
 import { LoginRegistrationComponent } from './login-registration/login-registration.component';
+import { FeedComponent } from './feed/feed.component';
+import { PostComponent } from './post/post.component';
+import { AddUpdatePostComponent } from './add-update-post/add-update-post.component';
 
 @NgModule({
-  declarations: [		
+  declarations: [			
     AppComponent,
-      LoginRegistrationComponent
+      LoginRegistrationComponent,
+      FeedComponent,
+      PostComponent,
+      AddUpdatePostComponent
    ],
   imports: [
     BrowserModule,
     RouterModule.forRoot([
-      { path: '', component: LoginRegistrationComponent },
+      { path: 'login', component: LoginRegistrationComponent },
+      { path: '', component: FeedComponent },
     ])
   ],
   providers: [],

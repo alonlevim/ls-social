@@ -1,0 +1,13 @@
+<div class="layout">
+  <div class="container">
+    <div class="content">
+      <h2 class="title-add-post">{{type == 'edit' ? 'Update' : 'Add'}} Post</h2>
+      <div class="exit">X</div>
+      <form class="post-form">
+        <textarea name="description" placeholder="Description"></textarea>
+        <input type="file" name="image" accept="image/*" />
+        <button class="publish-update">{{type == 'edit' ? 'Update' : 'Publish'}}</button>
+      </form>
+    </div>
+  </div>
+</div>
