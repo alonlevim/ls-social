@@ -12,7 +12,7 @@ section {
         flex-wrap: wrap;
         justify-content: space-between;
 
-        @media only screen and (max-width: 600px)  {
+        @media (max-width: 600px)  {
             flex-direction: column;
         }
 
@@ -25,7 +25,7 @@ section {
 
             }
             
-            @media only screen and (max-width: 600px)  {
+            @media (max-width: 600px)  {
                 flex-basis: 100%;
                 width: 50%;
                 margin: auto;
@@ -40,7 +40,7 @@ section {
             max-width: 300px;
             margin: auto;
 
-            @media only screen and (max-width: 600px)  {
+            @media (max-width: 600px)  {
                 flex-basis: 100%;
                 width: 85%;
                 margin: 20px auto auto auto;
