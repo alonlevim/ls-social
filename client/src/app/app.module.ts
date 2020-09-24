@@ -8,14 +8,16 @@ import { LoginRegistrationComponent } from './login-registration/login-registrat
 import { FeedComponent } from './feed/feed.component';
 import { PostComponent } from './post/post.component';
 import { AddUpdatePostComponent } from './add-update-post/add-update-post.component';
+import { LoadingComponent } from './loading/loading.component';
 
 @NgModule({
-  declarations: [			
+  declarations: [				
     AppComponent,
       LoginRegistrationComponent,
       FeedComponent,
       PostComponent,
-      AddUpdatePostComponent
+      AddUpdatePostComponent,
+      LoadingComponent
    ],
   imports: [
     BrowserModule,

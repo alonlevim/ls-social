@@ -10,14 +10,22 @@ import { FeedService } from '../feed.service';
 export class FeedComponent implements OnInit {
   posts = [];
   showPopup = false;
-  typePopup :string;
+  typePopup: string;
   postToEdit;
+  loading = false;
+  error = false;
 
   constructor(private feedService: FeedService) { }
 
   ngOnInit() {
-    this.feedService.getPosts().subscribe((data: any[])=>{
+    this.loading = true;
+    this.feedService.getPosts().subscribe((data: any[]) => {
       this.posts = data;
+      this.error = false;
+      this.loading = false;
+    }, (err) => {
+      this.error = true;
+      this.loading = false;
     });
   }
 

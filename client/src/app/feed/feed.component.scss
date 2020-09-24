@@ -88,6 +88,8 @@ header {
     padding-top: 50px;
     background-color: #eeeeee;
     padding-bottom: 20px;
+    min-height: calc( 100% - 60px - 10px );
+    position: relative;
     
     .content-container {
         max-width: 600px;
@@ -109,6 +111,11 @@ header {
                 background-color: white;
             }
         }
+    }
+
+    .error {
+        text-align: center;
+        color: #424a52;
     }
 }
 
