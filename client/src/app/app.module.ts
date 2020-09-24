@@ -1,6 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
+import { HttpClientModule } from '@angular/common/http';
 
 import { AppComponent } from './app.component';
 import { LoginRegistrationComponent } from './login-registration/login-registration.component';
@@ -18,6 +19,7 @@ import { AddUpdatePostComponent } from './add-update-post/add-update-post.compon
    ],
   imports: [
     BrowserModule,
+    HttpClientModule,
     RouterModule.forRoot([
       { path: 'login', component: LoginRegistrationComponent },
       { path: '', component: FeedComponent },

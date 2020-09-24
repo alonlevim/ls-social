@@ -16,7 +16,9 @@ export class FeedComponent implements OnInit {
   constructor(private feedService: FeedService) { }
 
   ngOnInit() {
-    this.posts = this.feedService.getPosts();
+    this.feedService.getPosts().subscribe((data: any[])=>{
+      this.posts = data;
+    });
   }
 
   showAddPostPopup() {

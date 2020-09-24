@@ -1,24 +1,17 @@
 import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
 })
 export class FeedService {
-  private posts = [];
-
-  constructor() {
-    this.posts = [{
-      idUser: 1,
-      userName: "Alon",
-      description: 'It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using \'Content here, content here\', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for \'lorem ipsum\' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).',
-      img: 'https://image.cnbcfm.com/api/v1/image/105828578-1554223245858gettyimages-149052633.jpeg?v=1554223281&w=740&h=416',
-      createdAt: 1600963765207,
-      updatedAt: 1600963765207
-    }];
+  private REST_API_SERVER = "http://localhost:8081/api";
+  
+  constructor(private http: HttpClient) {
   }
 
   getPosts() {
-    return this.posts;
+    return this.http.get(`${this.REST_API_SERVER}/feed`);
   }
 
 }
