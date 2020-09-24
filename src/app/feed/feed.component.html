@@ -21,9 +21,11 @@
   <div class="container">
     <div class="content-container">
       <h1 class="feed-title">Feed</h1>
-      <button class="add-post">Add Post</button>
+      <button class="add-post" (click)="showAddPostPopup()">Add Post</button>
     </div>
 
-    <app-post *ngFor="let post of posts" [post]="post"></app-post>
+    <app-post *ngFor="let post of posts" [post]="post" (edit)="showEditPostPopup(post)"></app-post>
   </div>
 </section>
+
+<app-add-update-post [show]="showPopup" [type]="typePopup" (exit)="closePopup()" [post]="postToEdit"></app-add-update-post>

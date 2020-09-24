@@ -7,5 +7,5 @@
   <p>{{post.description}}</p>
   <p>Posted: {{post.createdAt}}</p>
   <img src={{post.img}} />
-  <div class="settings"></div>
+  <div class="settings" (click)="edit.emit()"></div>
 </article>

@@ -1,11 +1,16 @@
-<div class="layout">
+<div class="layout" *ngIf="show">
   <div class="container">
     <div class="content">
       <h2 class="title-add-post">{{type == 'edit' ? 'Update' : 'Add'}} Post</h2>
-      <div class="exit">X</div>
+      <div class="exit"(click)="exit.emit()">X</div>
       <form class="post-form">
-        <textarea name="description" placeholder="Description"></textarea>
-        <input type="file" name="image" accept="image/*" />
+        <textarea name="description" placeholder="Description">{{type == 'edit' ? post.description : null}}</textarea>
+        <div class="manage-img" *ngIf="post.img != null && post.img.trim() != ''">
+          <img src='{{post.img}}' />
+          <button>Delete Image</button>
+        </div>
+        
+        <input type="file" name="image" accept="image/*" *ngIf="post.img == null || post.img.trim() == ''"/>
         <button class="publish-update">{{type == 'edit' ? 'Update' : 'Publish'}}</button>
       </form>
     </div>

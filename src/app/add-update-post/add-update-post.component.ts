@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
+import { Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-add-update-post',
@@ -6,7 +7,10 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./add-update-post.component.scss']
 })
 export class AddUpdatePostComponent implements OnInit {
-  type = 'edit';
+  @Input() type;
+  @Input() show;
+  @Input() post;
+  @Output() exit = new EventEmitter();
 
   constructor() { }
 

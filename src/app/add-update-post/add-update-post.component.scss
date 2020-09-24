@@ -59,6 +59,14 @@
                 height: 35px;
                 margin: auto;
             }
+
+            .manage-img {
+                max-width: 600px;
+                
+                img {
+                    width: 100%;
+                }
+            }
         }
     }
 }
