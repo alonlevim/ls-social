@@ -1,4 +1,4 @@
-const authentication = require("../models/authentication");
+const Authentication = require("../controllers/Authentication");
 
 module.exports = (router) => {
     router.get('/feed', (req, res) => {
@@ -12,7 +12,7 @@ module.exports = (router) => {
         }]);
     });
 
-    router.post('/add-user', authentication.addUser);
+    router.post('/add-user', Authentication.addUser);
 
     return router;
 };
