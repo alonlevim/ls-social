@@ -1,17 +1,16 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
+import { ConfigService } from './../config/config.service';
+
 @Injectable({
   providedIn: 'root'
 })
 export class FeedService {
-  private REST_API_SERVER = "http://localhost:8081/api";
-  
-  constructor(private http: HttpClient) {
-  }
+  constructor(private http: HttpClient, private service: ConfigService) { }
 
   getPosts() {
-    return this.http.get(`${this.REST_API_SERVER}/feed`);
+    return this.service.getFeed();
   }
 
 }
