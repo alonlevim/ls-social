@@ -23,7 +23,7 @@ module.exports = {
             ||
             req.body.password.length < 4
         ) {
-            return res.json(failedStatus);
+            return res.status(400).json(failedStatus);
         }
 
         const { name, email, password } = req.body;
@@ -39,7 +39,7 @@ module.exports = {
         newUser.save().then(() => {
             res.json(succeededStatus);
         }).catch(() => {
-            res.json(failedStatus);
+            res.status(400).json(failedStatus);
         });
     }
 };
