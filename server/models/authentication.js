@@ -1,5 +1,6 @@
 require('dotenv').config();
 const jwt = require('jsonwebtoken');
+const crypto = require('crypto');
 
 const User = require('../schemas/user');
 
@@ -33,7 +34,7 @@ const decodedToken = (token) => {
 };
 
 const tokenVerification = (token) => {
-    if( token == null || typeof token !== "string" || token.trim().length < 50 ) {
+    if (token == null || typeof token !== "string" || token.trim().length < 50) {
         return false;
     }
 
@@ -41,6 +42,9 @@ const tokenVerification = (token) => {
 
     return decoded !== false;
 };
+
+const cryptographic = (password) => crypto.createHmac('sha256', password)
+    .digest('hex');
 
 module.exports = {
     addUser: (req, res) => {
@@ -71,7 +75,7 @@ module.exports = {
         const newUser = new User({
             name,
             email,
-            password
+            password: cryptographic(password)
         });
 
         // Save and return status
@@ -89,11 +93,11 @@ module.exports = {
     },
 
     verifyAuth: (req, res, next) => {
-        if( typeof req.headers['authorization'] === "undefined"
-        ||
-        req.headers['authorization'].trim() === ""
-        ||
-        !req.headers['authorization'].includes('bearer')
+        if (typeof req.headers['authorization'] === "undefined"
+            ||
+            req.headers['authorization'].trim() === ""
+            ||
+            !req.headers['authorization'].includes('bearer')
         ) {
             return res.status(400).json(failedStatus);
         }
@@ -104,7 +108,7 @@ module.exports = {
         const token = authorizationHeader.split(" ")[1];
 
         // Succeeded
-        if(tokenVerification(token)) {
+        if (tokenVerification(token)) {
             next();
         }
         // failed
