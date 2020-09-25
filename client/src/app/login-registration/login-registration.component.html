@@ -6,6 +6,10 @@
     <form *ngIf="typeMethod == 'sign-in'" #loginUserForm="ngForm"
       (ngSubmit)="loginUserForm.form.valid && onSubmit(loginUserForm.value)" class="form-login">
 
+      <div *ngIf="errorRequest">
+        <p class="error-message">Can't login right now, try in few minutes again.</p>
+      </div>
+
       <div class="invalid-feedback" *ngIf="loginUserForm.submitted && email.invalid">
         <p *ngIf="email.errors?.required" class="error-message">Email is required</p>
         <div *ngIf="email.errors.email || email.errors.pattern" class="error-message">Must be a valid email address
@@ -26,6 +30,11 @@
 
     <form #userForm="ngForm" (ngSubmit)="userForm.form.valid && onSubmit(userForm.value)" class="form-login"
       *ngIf="typeMethod == 'sign-up'">
+      
+      <div *ngIf="errorRequest">
+        <p class="error-message">Can't registration right now, try in few minutes again.</p>
+      </div>
+
       <div class="invalid-feedback" *ngIf="userForm.submitted && email.invalid">
         <p *ngIf="name.errors?.required" class="error-message">Name is required</p>
         <div *ngIf="name.errors?.minlength" class="error-message">Name should be at least 2 characters long</div>

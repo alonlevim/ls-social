@@ -13,7 +13,7 @@ export class TokenService {
   }
 
   getToken() {
-    return localStorage.getItem(this.tokenKey);
+    return 'bearer ' + localStorage.getItem(this.tokenKey);
   }
 
   setToken(token) {
