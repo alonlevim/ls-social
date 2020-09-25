@@ -1,6 +1,9 @@
 const Authentication = require("../controllers/Authentication");
 
 module.exports = (router) => {
+    // Middleware
+    router.use(Authentication.verifyAuth);
+
     router.get('/feed', (req, res) => {
         res.json([{
             idUser: 1,
