@@ -1,6 +1,10 @@
 const authentication = require('../models/authentication');
 
 module.exports = {
+    login: (req, res) => {
+        authentication.login(req, res);
+    },
+
     addUser: (req, res) => {
         authentication.addUser(req, res);
     },

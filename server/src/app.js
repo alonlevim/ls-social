@@ -19,6 +19,7 @@ const router = express.Router();
 app.use('/api', mainRouter(router));
 
 // Rest api without verify token middleware
+app.post('/login', Authentication.login);
 app.post('/add-user', Authentication.addUser);
 
 // Start the server

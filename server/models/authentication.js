@@ -7,6 +7,7 @@ const User = require('../schemas/user');
 
 const succeededStatus = { status: "ok" };
 const failedStatus = { status: "failed" };
+const minLengthPassword = 4;
 
 const getSecret = () => {
     return process.env.SECRET || 'secret';
@@ -47,6 +48,45 @@ const cryptographic = (password) => crypto.createHmac('sha256', password)
     .digest('hex');
 
 module.exports = {
+    login: (req, res) => {
+        // Verification
+        if (
+            typeof req.body.email === "undefined"
+            ||
+            req.body.email.trim() == ""
+            ||
+            !req.body.email.includes('@')
+            ||
+            typeof req.body.password === "undefined"
+            ||
+            req.body.password.trim() == ""
+            ||
+            req.body.password.length < minLengthPassword
+        ) {
+            return res.status(400).json(failedStatus);
+        }
+
+        const { email, password } = req.body;
+        const cryptographicPassword = cryptographic(password);
+
+        User.findOne({ email, password: cryptographicPassword }, (err, user) => {
+            if( err ) {
+                return res.status(400).json(failedStatus);
+            }
+
+            // Get token by id
+            const token = getToken(user);
+
+            // Can't get token
+            if (token === false) {
+                return res.status(400).json(failedStatus);
+            }
+
+            // Return succeed status with new token
+            res.json({ ...succeededStatus, token });
+        });
+    },
+
     addUser: (req, res) => {
         // Verification
         if (
@@ -64,7 +104,7 @@ module.exports = {
             ||
             req.body.password.trim() == ""
             ||
-            req.body.password.length < 4
+            req.body.password.length < minLengthPassword
         ) {
             return res.status(400).json(failedStatus);
         }
