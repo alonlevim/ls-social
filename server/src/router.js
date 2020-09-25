@@ -1,3 +1,5 @@
+const authentication = require("../models/authentication");
+
 module.exports = (router) => {
     router.get('/feed', (req, res) => {
         res.json([{
@@ -9,6 +11,8 @@ module.exports = (router) => {
             updatedAt: 1600963765207
         }]);
     });
+
+    router.post('/add-user', authentication.addUser);
 
     return router;
 };
