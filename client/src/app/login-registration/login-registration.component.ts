@@ -1,10 +1,5 @@
+import { User } from './../../authentication/user';
 import { Component, OnInit } from '@angular/core';
-
-export class User {
-  public name: string;
-  public email: string;
-  public password: string;
-}
 
 @Component({
   selector: 'app-login-registration',
@@ -25,7 +20,7 @@ export class LoginRegistrationComponent implements OnInit {
 
     }
     else if (this.typeMethod === "sign-in") {
-      
+
     }
   }
 
