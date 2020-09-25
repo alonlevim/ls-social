@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 import { FeedService } from '../feed.service';
+import { AuthenticationService } from '../../authentication/authentication.service';
 
 @Component({
   selector: 'app-feed',
@@ -15,7 +16,7 @@ export class FeedComponent implements OnInit {
   loading = false;
   error = false;
 
-  constructor(private feedService: FeedService) { }
+  constructor(private feedService: FeedService, private auth: AuthenticationService) { }
 
   ngOnInit() {
     this.loading = true;
@@ -43,6 +44,10 @@ export class FeedComponent implements OnInit {
   closePopup() {
     this.showPopup = false;
     this.postToEdit = {};
+  }
+
+  logout() {
+    this.auth.logout();
   }
 
 }

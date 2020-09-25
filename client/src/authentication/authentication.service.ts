@@ -37,7 +37,12 @@ export class AuthenticationService {
     });
   }
 
-  registrationSucceeded(data: NewToken) {
+  logout() {
+    this.token.removeToken();
+    window.location.reload();
+  }
+
+  private registrationSucceeded(data: NewToken) {
     if (data.status === "ok") {
       // Set token in local-storage
       this.token.setToken(data.token);
