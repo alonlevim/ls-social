@@ -25,12 +25,14 @@ module.exports = {
         ) {
             return res.json(failedStatus);
         }
-        
+
+        const { name, email, password } = req.body;
+
         // Create user
         const newUser = new User({
-            name: req.body.name,
-            email: req.body.email,
-            password: req.body.password
+            name,
+            email,
+            password
         });
 
         // Save and return status
