@@ -95,7 +95,7 @@ module.exports = {
         ||
         !req.headers['authorization'].includes('bearer')
         ) {
-            res.status(400).json(failedStatus);
+            return res.status(400).json(failedStatus);
         }
 
         const authorizationHeader = req.headers['authorization'];
