@@ -78,6 +78,7 @@ header {
             &:hover .dropdown-logout, &:active .dropdown-logout, &:focus .dropdown-logout {
                 opacity: 1;
                 height: 42px;
+                z-index: 1;
             }
         }
     }
