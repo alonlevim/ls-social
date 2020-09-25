@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { NavigationEnd, Router, RouterModule } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
 
 import { AppComponent } from './app.component';
@@ -9,6 +9,7 @@ import { FeedComponent } from './feed/feed.component';
 import { PostComponent } from './post/post.component';
 import { AddUpdatePostComponent } from './add-update-post/add-update-post.component';
 import { LoadingComponent } from './loading/loading.component';
+import { AuthenticationService } from '../authentication/authentication.service';
 
 @NgModule({
   declarations: [				
@@ -30,4 +31,12 @@ import { LoadingComponent } from './loading/loading.component';
   providers: [],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule { 
+  constructor(private router: Router, private authentication: AuthenticationService) {
+    router.events.subscribe((val) => {
+      if( val instanceof NavigationEnd ){
+        this.authentication.checkAuth(val.url);
+      }
+  });
+  }
+}
