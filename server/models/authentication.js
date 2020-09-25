@@ -7,15 +7,39 @@ const User = require('../schemas/user');
 const succeededStatus = { status: "ok" };
 const failedStatus = { status: "failed" };
 
+const getSecret = () => {
+    return process.env.SECRET || 'secret';
+}
+
 const getToken = (user) => {
     if (user == null || typeof user._id === "undefined")
         return false;
 
-    const secret = process.env.SECRET || 'secret';
+    const secret = getSecret();
 
     const token = jwt.sign({ _id: user._id }, secret, { expiresIn: '7d' });
 
     return token;
+};
+
+const decodedToken = (token) => {
+    const secret = getSecret();
+
+    try {
+        return jwt.verify(token, secret);
+    } catch (err) {
+        return false;
+    }
+};
+
+const tokenVerification = (token) => {
+    if( token == null || typeof token !== "string" || token.trim().length < 50 ) {
+        return false;
+    }
+
+    decoded = decodedToken(token);
+
+    return decoded !== false;
 };
 
 module.exports = {
@@ -54,13 +78,39 @@ module.exports = {
         newUser.save().then((user) => {
             const token = getToken(user);
 
-            if(token === false) {
+            if (token === false) {
                 throw 'Can\'t get token';
             }
 
-            res.json({...succeededStatus, token});
+            res.json({ ...succeededStatus, token });
         }).catch((e) => {
             res.status(400).json(failedStatus);
         });
+    },
+
+    verifyAuth: (req, res, next) => {
+        if( typeof req.headers['authorization'] === "undefined"
+        ||
+        req.headers['authorization'].trim() === ""
+        ||
+        !req.headers['authorization'].includes('bearer')
+        ) {
+            res.status(400).json(failedStatus);
+        }
+
+        const authorizationHeader = req.headers['authorization'];
+
+        // After bearer
+        const token = authorizationHeader.split(" ")[1];
+
+        // Succeeded
+        if(tokenVerification(token)) {
+            next();
+        }
+        // failed
+        else {
+            res.status(400).json(failedStatus);
+        }
+
     }
 };
