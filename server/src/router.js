@@ -15,7 +15,5 @@ module.exports = (router) => {
         }]);
     });
 
-    router.post('/add-user', Authentication.addUser);
-
     return router;
 };
