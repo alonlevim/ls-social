@@ -4,7 +4,7 @@ const user = require('../schemas/user');
 const helper = require('../helper');
 
 const getFeed = async (req, res) => {
-    post.find().then(async (posts) => {
+    post.find().sort({ field: 'asc', createdAt: -1 }).then(async (posts) => {
         // Join user name by id
         const newPosts = await Promise.all(posts.map(async post => {
 
@@ -19,7 +19,7 @@ const getFeed = async (req, res) => {
                 description: post.description,
                 createdAt: post.createdAt
             };
-            
+
             if (post.updatedAt)
                 newObjPost.updatedAt = post.updatedAt;
 
