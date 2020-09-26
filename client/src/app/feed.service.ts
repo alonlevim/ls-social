@@ -38,4 +38,13 @@ export class FeedService {
     });
   }
 
+  deletePost(id: string, errCallback: Function, successCallback: Function) {
+    this.service.deletePost(id).subscribe((data: Post[]) => {
+      this.posts = data;
+      successCallback();
+    }, (err) => {
+      errCallback(err);
+    });
+  }
+
 }

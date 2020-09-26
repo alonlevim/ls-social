@@ -12,6 +12,7 @@ module.exports = (router) => {
 
     router.post('/add-post', singleUpload, Feed.addPost);
     router.put('/update-post', singleUpload, Feed.updatePost);
+    router.delete('/delete-post/:_id', Feed.deletePost);
 
     return router;
 };

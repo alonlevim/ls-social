@@ -12,21 +12,31 @@
         <div class="title-group group">
           <div class="invalid-feedback" *ngIf="submitted && f.title.errors">
             <p *ngIf="f.title.errors.required" class="error-message">Title is required</p>
-            <div *ngIf="f.title.errors.minlength" class="error-message">Title should be at least {{minLengthTitle}} characters long</div>
-            <div *ngIf="f.title.errors.maxlength" class="error-message">Title should be at most {{maxLengthTitle}} characters long</div>
+            <div *ngIf="f.title.errors.minlength" class="error-message">Title should be at least {{minLengthTitle}}
+              characters long</div>
+            <div *ngIf="f.title.errors.maxlength" class="error-message">Title should be at most {{maxLengthTitle}}
+              characters long</div>
           </div>
-          <input id="title" type="text" name="title" placeholder="Title"  formControlName="title"  required minlength="{{minLengthTitle}}" maxlength="{{maxLengthTitle}}" />
+          <input id="title" type="text" name="title" placeholder="Title" formControlName="title" required
+            minlength="{{minLengthTitle}}" maxlength="{{maxLengthTitle}}" />
         </div>
 
         <textarea name="description" placeholder="Description" formControlName="description"></textarea>
-        <div class="manage-img" *ngIf="post != undefined && post.image != null && post.image.trim() != '' && !deleteImageFlag">
+        <div class="manage-img"
+          *ngIf="post != undefined && post.image != null && post.image.trim() != '' && !deleteImageFlag">
           <img src='{{post.image}}' />
           <button (click)="deleteImage()">Delete Image</button>
         </div>
 
         <input type="file" name="image" accept="image/*"
-          *ngIf="post == undefined || post.image == null || post.image.trim() == '' || deleteImageFlag" (change)="onFileSelect($event)" #UploadFileInput id="customFile" />
-        <button class="publifsh-update">{{type == 'edit' ? 'Update' : 'Publish'}}</button>
+          *ngIf="post == undefined || post.image == null || post.image.trim() == '' || deleteImageFlag"
+          (change)="onFileSelect($event)" #UploadFileInput id="customFile" />
+
+        <div class="buttons">
+          <button class="publish-update">{{type == 'edit' ? 'Update' : 'Publish'}}</button>
+          <button class="delete-post" *ngIf="type === 'edit'" (click)="deletePost()">Delete Post</button>
+        </div>
+
       </form>
     </div>
   </div>

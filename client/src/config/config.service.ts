@@ -6,7 +6,6 @@ import { catchError } from 'rxjs/operators';
 import { User } from '../authentication/user';
 import { TokenService } from '../authentication/token.service';
 import { NewToken } from './../authentication/newToken';
-import { Post } from 'src/app/post/post.component';
 
 @Injectable({
   providedIn: 'root'
@@ -48,6 +47,18 @@ export class ConfigService {
     }));
   }
 
+  deletePost(id: string) {
+    const deletePostApi = `api/delete-post/${id}`;
+    const httpOptions = {
+      headers: new HttpHeaders({ 'Content-Type': 'application/json', authorization: this.token.getToken() }),
+    };
+
+    return this.http.delete(this.configUrl + deletePostApi, httpOptions).pipe(catchError((error: HttpErrorResponse) => {
+      this.checkIllegalResponse(error);
+      return throwError(error.error.message || 'Something bad happened; please try again later.');
+    }));
+  }
+
   // Login / Registration
   postLogin(user: User) {
     const loginApi = 'login';
@@ -61,7 +72,7 @@ export class ConfigService {
     return this.http.post<NewToken>(this.configUrl + addUserApi, { ...user });
   }
 
-  private getOptions(withoutContentType=false) {
+  private getOptions(withoutContentType = false) {
     const params = new HttpParams();
     return {
       params,

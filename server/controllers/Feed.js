@@ -10,5 +10,9 @@ module.exports = {
 
     updatePost: (req, res) => {
         feed.updatePost(req, res)
+    },
+
+    deletePost: (req, res) => {
+        feed.deletePost(req, res)
     }
 }

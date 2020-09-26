@@ -104,4 +104,9 @@ export class AddUpdatePostComponent implements OnInit {
     this.deleteImageFlag = true;
   }
 
+  deletePost() {
+    this.loading = true;
+    this.feed.deletePost(this.post._id ,this.errorSubmitPost, this.successSubmitPost);
+  }
+
 }

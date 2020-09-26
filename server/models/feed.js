@@ -92,7 +92,6 @@ module.exports = {
             (req.file && typeof req.file.location !== "undefined")
         ) {
             if (await !deleteFile(req.body.keyImage)) {
-                console.log("Can't delete image.");
                 return res.status(400).json({ message: "Can't delete image." });
             }
 
@@ -123,6 +122,24 @@ module.exports = {
         }
 
         post.updateOne({ _id: req.body._id }, updatePostObj).then((post) => {
+            getFeed(req, res);
+        }).catch((e) => {
+            res.status(400).json(helper.failedStatus);
+        });
+    },
+
+    deletePost: async (req, res) => {
+        const id = req.params._id;
+
+        // Key image to delete it from aws
+        const keyImage = await post.findById(id).then(post => post.keyImage);
+        
+        // Delete image
+        if (await !deleteFile(keyImage)) {
+            return res.status(400).json({ message: "Can't delete image." });
+        }
+
+        post.deleteOne({ _id: req.params._id }).then(() => {
             getFeed(req, res);
         }).catch((e) => {
             res.status(400).json(helper.failedStatus);
