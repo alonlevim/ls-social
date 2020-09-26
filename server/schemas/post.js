@@ -6,6 +6,7 @@ const PostSchema = new Schema({
     title: { type: String, require: true, trim: true },
     description: { type: String, trim: true },
     image: { type: String, trim: true },
+    keyImage: { type: String, trim: true },
     createdAt: { type: Date, require: true },
     updatedAt: { type: Date }
 });

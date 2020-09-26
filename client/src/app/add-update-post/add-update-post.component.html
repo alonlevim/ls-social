@@ -1,4 +1,4 @@
-<div class="layout" *ngIf="show">
+<div class="layout">
   <div class="container">
     <div class="content">
       <h2 class="title-add-post">{{type == 'edit' ? 'Update' : 'Add'}} Post</h2>
@@ -19,13 +19,13 @@
         </div>
 
         <textarea name="description" placeholder="Description" formControlName="description"></textarea>
-        <div class="manage-img" *ngIf=" post != undefined && post.image != null && post.image.trim() != ''">
+        <div class="manage-img" *ngIf="post != undefined && post.image != null && post.image.trim() != '' && !deleteImageFlag">
           <img src='{{post.image}}' />
-          <button>Delete Image</button>
+          <button (click)="deleteImage()">Delete Image</button>
         </div>
 
         <input type="file" name="image" accept="image/*"
-          *ngIf="post == undefined || post.image == null || post.image.trim() == ''" (change)="onFileSelect($event)" #UploadFileInput id="customFile" />
+          *ngIf="post == undefined || post.image == null || post.image.trim() == '' || deleteImageFlag" (change)="onFileSelect($event)" #UploadFileInput id="customFile" />
         <button class="publifsh-update">{{type == 'edit' ? 'Update' : 'Publish'}}</button>
       </form>
     </div>

@@ -1,8 +1,8 @@
 const Authentication = require("../controllers/Authentication");
 const Feed = require("../controllers/Feed");
-const uploadFileToAWS = require('../services/upload');
+const { upload } = require('../services/upload');
 
-const singleUpload = uploadFileToAWS.single('image');
+const singleUpload = upload.single('image');
 
 module.exports = (router) => {
     // Middleware
@@ -11,6 +11,7 @@ module.exports = (router) => {
     router.get('/feed', Feed.getFeed);
 
     router.post('/add-post', singleUpload, Feed.addPost);
+    router.put('/update-post', singleUpload, Feed.updatePost);
 
     return router;
 };

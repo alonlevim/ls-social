@@ -19,13 +19,13 @@ export class AddUpdatePostComponent implements OnInit {
   protected submitted = false;
   protected minLengthTitle = 2;
   protected maxLengthTitle = 50;
-  
+  protected deleteImageFlag = false;
+
   @ViewChild('UploadFileInput', { static: false }) uploadFileInput: ElementRef;
   @Input() type: string;
-  @Input() show: boolean;
   @Input() post: Post;
   @Output() exit = new EventEmitter();
-  
+
 
   constructor(private feed: FeedService, private formBuilder: FormBuilder) {
     this.successSubmitPost = this.successSubmitPost.bind(this);
@@ -34,14 +34,16 @@ export class AddUpdatePostComponent implements OnInit {
 
   ngOnInit() {
     this.postForm = this.formBuilder.group({
-      title: ['', [Validators.required, Validators.minLength(this.minLengthTitle), Validators.maxLength(this.maxLengthTitle)]],
-      description: [''],
+      title: [this.type === "edit" ? this.post.title : '',
+      [Validators.required, Validators.minLength(this.minLengthTitle), Validators.maxLength(this.maxLengthTitle)]],
+      description: [this.type === "edit" ? (this.post.description || '') : ''],
       image: ['']
     });
   }
 
   initPost() {
     this.post = new Post();
+    this.deleteImageFlag = false;
   }
 
   // convenience getter for easy access to form fields
@@ -58,9 +60,9 @@ export class AddUpdatePostComponent implements OnInit {
     if (this.postForm.invalid) {
       return;
     }
-    
+
     this.loading = true;
-    
+
     // Organize form
     const formData = new FormData();
     formData.append('image', this.postForm.get('image').value);
@@ -70,20 +72,36 @@ export class AddUpdatePostComponent implements OnInit {
     }
 
     // Send form
-    this.feed.addPost(formData, this.errorSubmitPost, this.successSubmitPost);
+    if (this.type === "add")
+      this.feed.addPost(formData, this.errorSubmitPost, this.successSubmitPost);
+    else {
+      formData.append('_id', this.post._id);
+      formData.append('deletePhoto', this.deleteImageFlag ? 'true' : 'false');
+
+      if (this.deleteImageFlag) {
+        formData.append('keyImage', this.post.keyImage);
+      }
+
+      this.feed.updatePost(formData, this.errorSubmitPost, this.successSubmitPost);
+    }
+
   }
 
   successSubmitPost() {
     this.loading = false;
     this.errorSend = false;
     this.errorMessage = '';
-    this.show = false;
+    this.exit.emit();
   }
 
   errorSubmitPost(error: string) {
     this.loading = false;
     this.errorSend = true;
     this.errorMessage = error;
+  }
+
+  deleteImage() {
+    this.deleteImageFlag = true;
   }
 
 }

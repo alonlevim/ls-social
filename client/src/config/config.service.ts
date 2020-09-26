@@ -26,12 +26,23 @@ export class ConfigService {
     return this.http.get(this.configUrl + feedApi, options).pipe(catchError(this.handleError));
   }
 
-  postAddPost(post: FormData, failedCallback?: Function) {
+  postAddPost(post: FormData) {
     const addPostApi = 'api/add-post';
     const withoutContentType = true;
     const options = this.getOptions(withoutContentType);
 
     return this.http.post(this.configUrl + addPostApi, post, options).pipe(catchError((error: HttpErrorResponse) => {
+      this.checkIllegalResponse(error);
+      return throwError(error.error.message || 'Something bad happened; please try again later.');
+    }));
+  }
+
+  putUpdatePost(post: FormData) {
+    const updatePostApi = 'api/update-post';
+    const withoutContentType = true;
+    const options = this.getOptions(withoutContentType);
+
+    return this.http.put(this.configUrl + updatePostApi, post, options).pipe(catchError((error: HttpErrorResponse) => {
       this.checkIllegalResponse(error);
       return throwError(error.error.message || 'Something bad happened; please try again later.');
     }));

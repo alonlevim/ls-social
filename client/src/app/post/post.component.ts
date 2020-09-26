@@ -2,10 +2,12 @@ import { Component, OnInit, Input } from '@angular/core';
 import { Output, EventEmitter } from '@angular/core';
 
 export class Post {
+  public _id: string;
   public author: string;
   public title: string;
   public description: string;
   public image: any;
+  public keyImage: string;
   public createdAt: Date;
   public updatedAt: Date;
 }

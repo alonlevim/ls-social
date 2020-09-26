@@ -30,4 +30,4 @@
   </div>
 </section>
 
-<app-add-update-post [show]="showPopup" [type]="typePopup" (exit)="closePopup()" [post]="postToEdit"></app-add-update-post>
+<app-add-update-post *ngIf="showPopup" [type]="typePopup" (exit)="closePopup()" [post]="postToEdit"></app-add-update-post>

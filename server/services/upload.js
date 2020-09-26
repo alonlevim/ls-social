@@ -38,4 +38,22 @@ const upload = multer({
     })
 });
 
-module.exports = upload;
+const deleteFile = async (key) => {
+    if (key == null || key == "") {
+        return false;
+    }
+
+    var params = {
+        Bucket: bucketName,
+        Key: key
+    };
+
+    return await s3.deleteObject(params, function (err, data) {
+        // an error occurred
+        if (err) { return false; }
+        // successful response
+        else { return false; }
+    });
+};
+
+module.exports = { upload, deleteFile };

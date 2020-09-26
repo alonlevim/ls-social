@@ -29,4 +29,13 @@ export class FeedService {
     });
   }
 
+  updatePost(post: FormData, errCallback: Function, successCallback: Function) {
+    this.service.putUpdatePost(post).subscribe((data: Post[]) => {
+      this.posts = data;
+      successCallback();
+    }, (err) => {
+      errCallback(err);
+    });
+  }
+
 }
