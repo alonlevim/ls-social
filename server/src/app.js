@@ -1,10 +1,10 @@
-const express           = require('express');
-const bodyParser        = require('body-parser');
-const cors              = require('cors');
+const express = require('express');
+const bodyParser = require('body-parser');
+const cors = require('cors');
 
-const mongoose          = require('./mongoose');
-const mainRouter        = require('./router');
-const Authentication    = require("../controllers/Authentication");
+const mongoose = require('./mongoose');
+const mainRouter = require('./router');
+const Authentication = require("../controllers/Authentication");
 
 
 const port = process.env.PORT || 8081;
@@ -22,6 +22,11 @@ app.use('/api', mainRouter(router));
 // Rest api without verify token middleware
 app.post('/login', Authentication.login);
 app.post('/add-user', Authentication.addUser);
+
+// Catch 404
+app.use(function (req, res, next) {
+    res.status(404).send("Sorry can't find that!")
+});
 
 // Start the server
 app.listen(port);
