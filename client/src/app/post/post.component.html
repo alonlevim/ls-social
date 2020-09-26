@@ -8,5 +8,5 @@
   <p>{{post.description}}</p>
   <p>Posted: {{post.createdAt}}</p>
   <img src={{post.image}} />
-  <div class="settings" (click)="edit.emit()"></div>
+  <div *ngIf="post.admin" class="settings" (click)="edit.emit()"></div>
 </article>

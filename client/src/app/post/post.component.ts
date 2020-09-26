@@ -10,6 +10,7 @@ export class Post {
   public keyImage: string;
   public createdAt: Date;
   public updatedAt: Date;
+  public admin: boolean;
 }
 
 @Component({
