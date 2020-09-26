@@ -69,7 +69,7 @@ module.exports = {
         const { email, password } = req.body;
         const cryptographicPassword = cryptographic(password);
 
-        User.findOne({ email, password: cryptographicPassword }, (err, user) => {
+        User.findOne({ email: email.toLowerCase(), password: cryptographicPassword }, (err, user) => {
             if( err ) {
                 return res.status(400).json(failedStatus);
             }
@@ -114,7 +114,7 @@ module.exports = {
         // Create user
         const newUser = new User({
             name,
-            email,
+            email: email.toLowerCase(),
             password: cryptographic(password)
         });
 
