@@ -5,7 +5,7 @@ export class Post {
   public author: string;
   public title: string;
   public description: string;
-  public image: string;
+  public image: any;
   public createdAt: Date;
   public updatedAt: Date;
 }

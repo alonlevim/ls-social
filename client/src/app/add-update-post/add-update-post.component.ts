@@ -1,5 +1,6 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ElementRef, ViewChild } from '@angular/core';
 import { Output, EventEmitter } from '@angular/core';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 import { Post } from './../post/post.component';
 import { FeedService } from '../feed.service';
@@ -10,6 +11,7 @@ import { FeedService } from '../feed.service';
   styleUrls: ['./add-update-post.component.scss']
 })
 export class AddUpdatePostComponent implements OnInit {
+  @ViewChild('UploadFileInput', { static: false }) uploadFileInput: ElementRef;
   @Input() type: string;
   @Input() show: boolean;
   @Input() post: Post;
@@ -18,24 +20,53 @@ export class AddUpdatePostComponent implements OnInit {
   loading = false;
   errorSend = false;
   errorMessage: string;
+  postForm: FormGroup;
+  submitted = false;
+  protected minLengthTitle = 2;
+  protected maxLengthTitle = 50;
 
-  constructor(private feed: FeedService) {
+  constructor(private feed: FeedService, private formBuilder: FormBuilder) {
     this.successSubmitPost = this.successSubmitPost.bind(this);
     this.errorSubmitPost = this.errorSubmitPost.bind(this);
   }
 
   ngOnInit() {
+    this.postForm = this.formBuilder.group({
+      title: ['', [Validators.required, Validators.minLength(this.minLengthTitle), Validators.maxLength(this.maxLengthTitle)]],
+      description: [''],
+      image: ['']
+    });
   }
 
   initPost() {
     this.post = new Post();
   }
 
-  onSubmit(post: Post) {
-    this.errorSend = false;
-    this.errorMessage = '';
+  // convenience getter for easy access to form fields
+  get f() { return this.postForm.controls; }
 
-    this.feed.addPost(post, this.errorSubmitPost, this.successSubmitPost);
+  onFileSelect(event) {
+    const file = event.target.files[0];
+    this.postForm.get('image').setValue(file);
+  }
+
+  onSubmit() {
+    this.submitted = true;
+    // stop here if form is invalid
+    if (this.postForm.invalid) {
+      return;
+    }
+
+    // Organize form
+    const formData = new FormData();
+    formData.append('image', this.postForm.get('image').value);
+    formData.append('title', this.postForm.get('title').value);
+    if (this.postForm.get('description').value.trim() !== "") {
+      formData.append('description', this.postForm.get('description').value);
+    }
+
+    // Send form
+    this.feed.addPost(formData, this.errorSubmitPost, this.successSubmitPost);
   }
 
   successSubmitPost() {

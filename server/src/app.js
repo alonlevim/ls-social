@@ -4,7 +4,7 @@ const cors              = require('cors');
 
 const mongoose          = require('./mongoose');
 const mainRouter        = require('./router');
-const Authentication = require("../controllers/Authentication");
+const Authentication    = require("../controllers/Authentication");
 
 
 const port = process.env.PORT || 8081;
@@ -12,8 +12,8 @@ const port = process.env.PORT || 8081;
 const app = express();
 
 app.use(cors())
-app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+
 
 // Router
 const router = express.Router();

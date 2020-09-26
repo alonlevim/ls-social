@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders, HttpParams } from '@angular/common/http';
 import { throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
@@ -26,9 +26,10 @@ export class ConfigService {
     return this.http.get(this.configUrl + feedApi, options).pipe(catchError(this.handleError));
   }
 
-  postAddPost(post: Post, failedCallback?: Function) {
+  postAddPost(post: FormData, failedCallback?: Function) {
     const addPostApi = 'api/add-post';
-    const options = this.getOptions();
+    const withoutContentType = true;
+    const options = this.getOptions(withoutContentType);
 
     return this.http.post(this.configUrl + addPostApi, post, options).pipe(catchError((error: HttpErrorResponse) => {
       this.checkIllegalResponse(error);
@@ -49,9 +50,14 @@ export class ConfigService {
     return this.http.post<NewToken>(this.configUrl + addUserApi, { ...user });
   }
 
-  private getOptions() {
+  private getOptions(withoutContentType=false) {
+    const params = new HttpParams();
     return {
-      headers: new HttpHeaders({
+      params,
+      reportProgress: true,
+      headers: withoutContentType ? new HttpHeaders({
+        authorization: this.token.getToken()
+      }) : new HttpHeaders({
         'Content-Type': 'application/json',
         authorization: this.token.getToken()
       })

@@ -20,7 +20,7 @@ export class FeedService {
     });
   }
 
-  addPost(post: Post, errCallback: Function, successCallback: Function) {
+  addPost(post: FormData, errCallback: Function, successCallback: Function) {
     this.service.postAddPost(post).subscribe((data: Post[]) => {
       this.posts = data;
       successCallback();
