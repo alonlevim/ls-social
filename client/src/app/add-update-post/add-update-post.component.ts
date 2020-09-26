@@ -12,7 +12,6 @@ import { FeedService } from '../feed.service';
 })
 export class AddUpdatePostComponent implements OnInit {
   protected tempTitle: string;
-  protected loading = false;
   protected errorSend = false;
   protected errorMessage: string;
   protected postForm: FormGroup;
@@ -20,6 +19,7 @@ export class AddUpdatePostComponent implements OnInit {
   protected minLengthTitle = 2;
   protected maxLengthTitle = 50;
   protected deleteImageFlag = false;
+  public loading = false;
 
   @ViewChild('UploadFileInput', { static: false }) uploadFileInput: ElementRef;
   @Input() type: string;
