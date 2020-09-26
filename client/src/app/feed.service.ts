@@ -25,7 +25,7 @@ export class FeedService {
       this.posts = data;
       successCallback();
     }, (err) => {
-      errCallback();
+      errCallback(err);
     });
   }
 

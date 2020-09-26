@@ -2,16 +2,32 @@
   <div class="container">
     <div class="content">
       <h2 class="title-add-post">{{type == 'edit' ? 'Update' : 'Add'}} Post</h2>
-      <div class="exit"(click)="exit.emit()">X</div>
-      <form class="post-form" #postForm="ngForm" (ngSubmit)="onSubmit(postForm.value)">
-        <input type="text" name="title" placeholder="Title" [(ngModel)]="post?.title || initPost() || tempTitle" #title="ngModel" />
-        <textarea name="description" placeholder="Description" [(ngModel)]="post.description" #description="ngModel"></textarea>
+      <div class="exit" (click)="exit.emit()">X</div>
+
+      <form class="post-form" #postForm="ngForm" (ngSubmit)="postForm.form.valid && onSubmit(postForm.value)">
+        <div *ngIf="errorSend">
+          <p class="error-message">{{errorMessage}}</p>
+        </div>
+
+        <div class="title-group group">
+          <div class="invalid-feedback" *ngIf="postForm.submitted && title.invalid">
+            <p *ngIf="title.errors?.required" class="error-message">Title is required</p>
+            <div *ngIf="title.errors?.minlength" class="error-message">Title should be at least 1 characters long</div>
+            <div *ngIf="title.errors?.maxlength" class="error-message">Title should be at most 50 characters long</div>
+          </div>
+          <input type="text" name="title" placeholder="Title" [(ngModel)]="post?.title || initPost() || tempTitle"
+            #title="ngModel" required minlength="1" maxlength="50" />
+        </div>
+
+        <textarea name="description" placeholder="Description" [(ngModel)]="post.description"
+          #description="ngModel"></textarea>
         <div class="manage-img" *ngIf=" post != undefined && post.image != null && post.image.trim() != ''">
           <img src='{{post.image}}' />
           <button>Delete Image</button>
         </div>
-        
-        <input type="file" name="image" accept="image/*" *ngIf="post == undefined || post.image == null || post.image.trim() == ''"/>
+
+        <input type="file" name="image" accept="image/*"
+          *ngIf="post == undefined || post.image == null || post.image.trim() == ''" />
         <button class="publish-update">{{type == 'edit' ? 'Update' : 'Publish'}}</button>
       </form>
     </div>

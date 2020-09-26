@@ -17,6 +17,7 @@ export class AddUpdatePostComponent implements OnInit {
   tempTitle: string;
   loading = false;
   errorSend = false;
+  errorMessage: string;
 
   constructor(private feed: FeedService) {
     this.successSubmitPost = this.successSubmitPost.bind(this);
@@ -31,18 +32,23 @@ export class AddUpdatePostComponent implements OnInit {
   }
 
   onSubmit(post: Post) {
+    this.errorSend = false;
+    this.errorMessage = '';
+
     this.feed.addPost(post, this.errorSubmitPost, this.successSubmitPost);
   }
 
   successSubmitPost() {
     this.loading = false;
     this.errorSend = false;
+    this.errorMessage = '';
     this.show = false;
   }
 
-  errorSubmitPost() {
+  errorSubmitPost(error: string) {
     this.loading = false;
     this.errorSend = true;
+    this.errorMessage = error;
   }
 
 }

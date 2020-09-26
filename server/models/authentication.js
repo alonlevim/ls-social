@@ -63,15 +63,19 @@ const getTokenFromHeader = (req) => {
 
 module.exports = {
     login: (req, res) => {
-        // Verification
+        // Validation
         if (
             typeof req.body.email === "undefined"
+            ||
+            req.body.email == null
             ||
             req.body.email.trim() == ""
             ||
             !req.body.email.includes('@')
             ||
             typeof req.body.password === "undefined"
+            ||
+            req.body.password == null
             ||
             req.body.password.trim() == ""
             ||
@@ -102,19 +106,25 @@ module.exports = {
     },
 
     addUser: (req, res) => {
-        // Verification
+        // Validation
         if (
             typeof req.body.name === "undefined"
+            ||
+            req.body.name == null
             ||
             req.body.name.trim() == ""
             ||
             typeof req.body.email === "undefined"
+            ||
+            req.body.email == null
             ||
             req.body.email.trim() == ""
             ||
             !req.body.email.includes('@')
             ||
             typeof req.body.password === "undefined"
+            ||
+            req.body.password == null
             ||
             req.body.password.trim() == ""
             ||

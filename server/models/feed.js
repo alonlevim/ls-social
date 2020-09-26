@@ -31,7 +31,7 @@ const getFeed = async (req, res) => {
         
         res.json(newPosts);
     }).catch((err) => {
-        req.status(400).json({ status: "Can't get feed" });
+        req.status(400).json({ message: "Can't get feed" });
     });
 };
 
@@ -39,6 +39,17 @@ module.exports = {
     getFeed,
 
     addPost: (req, res) => {
+        // Validation - title must to by existing and not empty
+        if (
+            typeof req.body.title === "undefined"
+            ||
+            req.body.title == null
+            ||
+            req.body.title.trim() == ""
+        ) {
+            return res.status(400).json({message: "Missing details"});
+        }
+
         const userId = Authentication.returnIdByToken(req);
 
         if (!userId) {

@@ -72,6 +72,14 @@
                     width: 100%;
                 }
             }
+
+            .error-message {
+                color: #a52a2a;
+            }
+
+            .group > *{
+                width: 100%;
+            }
         }
     }
 }

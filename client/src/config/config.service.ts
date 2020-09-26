@@ -26,11 +26,14 @@ export class ConfigService {
     return this.http.get(this.configUrl + feedApi, options).pipe(catchError(this.handleError));
   }
 
-  postAddPost(post: Post) {
+  postAddPost(post: Post, failedCallback?: Function) {
     const addPostApi = 'api/add-post';
     const options = this.getOptions();
 
-    return this.http.post(this.configUrl + addPostApi, post, options).pipe(catchError(this.handleError));
+    return this.http.post(this.configUrl + addPostApi, post, options).pipe(catchError((error: HttpErrorResponse) => {
+      this.checkIllegalResponse(error);
+      return throwError(error.error.message || 'Something bad happened; please try again later.');
+    }));
   }
 
   // Login / Registration
@@ -55,14 +58,21 @@ export class ConfigService {
     };
   }
 
-  private handleError(error: HttpErrorResponse) {
+  private checkIllegalResponse({ error }: HttpErrorResponse) {
     const failed = "failed";
 
-    if (typeof error.error.status !== "undefined" && error.error.status === failed) {
+    if (typeof error.status !== "undefined" && error.status === failed) {
       // Remove token from local-storage
       this.token.removeToken();
       window.location.reload();
+      return false;
     }
+
+    return true;
+  }
+
+  private handleError(error: HttpErrorResponse) {
+    this.checkIllegalResponse(error);
 
     return throwError(
       'Something bad happened; please try again later.');
