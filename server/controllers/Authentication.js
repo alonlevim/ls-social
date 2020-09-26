@@ -11,5 +11,9 @@ module.exports = {
 
     verifyAuth: (req, res, next) => {
         authentication.verifyAuth(req, res, next);
-    }
+    },
+
+    returnIdByToken: (req) => {
+        return authentication.returnIdByToken(req);
+    } 
 };

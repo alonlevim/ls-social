@@ -3,6 +3,7 @@ const jwt = require('jsonwebtoken');
 const crypto = require('crypto');
 
 const User = require('../schemas/user');
+const { decode } = require('punycode');
 
 
 const succeededStatus = { status: "ok" };
@@ -47,6 +48,22 @@ const tokenVerification = (token) => {
 const cryptographic = (password) => crypto.createHmac('sha256', password)
     .digest('hex');
 
+const getTokenFromHeader = (req) => {
+    if (typeof req.headers['authorization'] === "undefined"
+        ||
+        req.headers['authorization'].trim() === ""
+        ||
+        !req.headers['authorization'].includes('bearer')
+    ) {
+        return false;
+    }
+
+    const authorizationHeader = req.headers['authorization'];
+
+    // After bearer
+    return authorizationHeader.split(" ")[1];
+};
+
 module.exports = {
     login: (req, res) => {
         // Verification
@@ -70,7 +87,7 @@ module.exports = {
         const cryptographicPassword = cryptographic(password);
 
         User.findOne({ email: email.toLowerCase(), password: cryptographicPassword }, (err, user) => {
-            if( err ) {
+            if (err) {
                 return res.status(400).json(failedStatus);
             }
 
@@ -133,19 +150,11 @@ module.exports = {
     },
 
     verifyAuth: (req, res, next) => {
-        if (typeof req.headers['authorization'] === "undefined"
-            ||
-            req.headers['authorization'].trim() === ""
-            ||
-            !req.headers['authorization'].includes('bearer')
-        ) {
-            return res.status(400).json(failedStatus);
+        const token = getTokenFromHeader(req);
+
+        if (token == false || typeof token !== "string" || token.trim().length < 50) {
+            res.status(400).json(failedStatus);
         }
-
-        const authorizationHeader = req.headers['authorization'];
-
-        // After bearer
-        const token = authorizationHeader.split(" ")[1];
 
         // Succeeded
         if (tokenVerification(token)) {
@@ -155,6 +164,17 @@ module.exports = {
         else {
             res.status(400).json(failedStatus);
         }
+    },
 
+    returnIdByToken: (req) => {
+        const token = getTokenFromHeader(req);
+
+        if (token == false || typeof token !== "string" || token.trim().length < 50) {
+            return false;
+        }
+
+        const decoded = decodedToken(token);
+
+        return typeof decoded._id !== "undefined" ? decoded._id : false;
     }
 };
