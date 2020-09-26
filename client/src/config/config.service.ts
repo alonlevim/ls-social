@@ -24,6 +24,12 @@ export class ConfigService {
     return this.http.get(this.configUrl + feedApi, options).pipe(catchError(this.handleError));
   }
 
+  postLogin(user: User) {
+    const loginApi = 'login';
+
+    return this.http.post<NewToken>(this.configUrl + loginApi, { ...user });
+  }
+
   postRegistration(user: User) {
     const addUserApi = 'add-user';
 

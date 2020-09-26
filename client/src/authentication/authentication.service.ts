@@ -26,13 +26,16 @@ export class AuthenticationService {
     }
   }
 
-  login(user: User) {
-    
+  login(user: User, catchError: Function) {
+    this.server.postLogin(user).subscribe({
+      next: data => this.loginSucceeded(data),
+      error: error => catchError()
+    });
   }
 
   registration(user: User, catchError: Function) {
-    return this.server.postRegistration(user).subscribe({
-      next: data => this.registrationSucceeded(data),
+    this.server.postRegistration(user).subscribe({
+      next: data => this.loginSucceeded(data),
       error: error => catchError()
     });
   }
@@ -42,7 +45,7 @@ export class AuthenticationService {
     window.location.reload();
   }
 
-  private registrationSucceeded(data: NewToken) {
+  private loginSucceeded(data: NewToken) {
     if (data.status === "ok") {
       // Set token in local-storage
       this.token.setToken(data.token);
