@@ -16,7 +16,7 @@ export class FeedComponent implements OnInit {
   loading = false;
   error = false;
 
-  constructor(protected feed: FeedService, private auth: AuthenticationService) {
+  constructor(public feed: FeedService, private auth: AuthenticationService) {
     this.successGetFeed = this.successGetFeed.bind(this);
     this.errorGetFeed = this.errorGetFeed.bind(this);
   }
