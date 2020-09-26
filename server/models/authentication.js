@@ -150,7 +150,7 @@ module.exports = {
         const token = getTokenFromHeader(req);
 
         if (token == false || typeof token !== "string" || token.trim().length < 50) {
-            res.status(400).json(helper.failedStatus);
+            return res.status(400).json(helper.failedStatus);
         }
 
         // Succeeded
@@ -159,7 +159,7 @@ module.exports = {
         }
         // failed
         else {
-            res.status(400).json(helper.failedStatus);
+            return res.status(400).json(helper.failedStatus);
         }
     },
 
