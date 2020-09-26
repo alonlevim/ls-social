@@ -6,6 +6,8 @@ module.exports = (router) => {
     router.use(Authentication.verifyAuth);
 
     router.get('/feed', Feed.getFeed);
+    
+    router.post('/add-post', Feed.addPost);
 
     return router;
 };

@@ -6,6 +6,7 @@ import { catchError } from 'rxjs/operators';
 import { User } from '../authentication/user';
 import { TokenService } from '../authentication/token.service';
 import { NewToken } from './../authentication/newToken';
+import { Post } from 'src/app/post/post.component';
 
 @Injectable({
   providedIn: 'root'
@@ -17,6 +18,7 @@ export class ConfigService {
     this.handleError = this.handleError.bind(this);
   }
 
+  // Feed
   getFeed() {
     const feedApi = 'api/feed';
     const options = this.getOptions();
@@ -24,6 +26,14 @@ export class ConfigService {
     return this.http.get(this.configUrl + feedApi, options).pipe(catchError(this.handleError));
   }
 
+  postAddPost(post: Post) {
+    const addPostApi = 'api/add-post';
+    const options = this.getOptions();
+
+    return this.http.post(this.configUrl + addPostApi, post, options).pipe(catchError(this.handleError));
+  }
+
+  // Login / Registration
   postLogin(user: User) {
     const loginApi = 'login';
 
