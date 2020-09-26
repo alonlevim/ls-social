@@ -9,14 +9,19 @@ import { Post } from './../post/post.component';
   styleUrls: ['./add-update-post.component.scss']
 })
 export class AddUpdatePostComponent implements OnInit {
-  @Input() type;
-  @Input() show;
+  @Input() type: string;
+  @Input() show: boolean;
   @Input() post: Post;
   @Output() exit = new EventEmitter();
+  tempTitle: string;
 
   constructor() { }
 
   ngOnInit() {
+  }
+
+  initPost() {
+    this.post = new Post();
   }
 
 }
