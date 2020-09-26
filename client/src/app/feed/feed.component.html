@@ -23,6 +23,7 @@
       <h1 class="feed-title">Feed</h1>
       <button class="add-post" *ngIf="!loading" (click)="showAddPostPopup()">Add Post</button>
       <p *ngIf="!loading && error" class="error">Oops! The Data Could Not Be Found</p>
+      <p *ngIf="!loading && !error && feed.posts.length === 0" class="error">There is no posts in feed</p>
     </div>
 
     <app-loading *ngIf="loading"></app-loading>
