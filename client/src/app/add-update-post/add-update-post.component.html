@@ -2,9 +2,9 @@
   <div class="container">
     <div class="content">
       <h2 class="title-add-post">{{type == 'edit' ? 'Update' : 'Add'}} Post</h2>
-      <div class="exit" (click)="exit.emit()">X</div>
+      <div *ngIf="!loading" class="exit" (click)="exit.emit()">X</div>
 
-      <form class="post-form" [formGroup]="postForm" (ngSubmit)="onSubmit()">
+      <form *ngIf="!loading" class="post-form" [formGroup]="postForm" (ngSubmit)="onSubmit()">
         <div *ngIf="errorSend">
           <p class="error-message">{{errorMessage}}</p>
         </div>
@@ -26,8 +26,11 @@
 
         <input type="file" name="image" accept="image/*"
           *ngIf="post == undefined || post.image == null || post.image.trim() == ''" (change)="onFileSelect($event)" #UploadFileInput id="customFile" />
-        <button class="publish-update">{{type == 'edit' ? 'Update' : 'Publish'}}</button>
+        <button class="publifsh-update">{{type == 'edit' ? 'Update' : 'Publish'}}</button>
       </form>
     </div>
+  </div>
+  <div *ngIf="loading">
+    <app-loading></app-loading>
   </div>
 </div>

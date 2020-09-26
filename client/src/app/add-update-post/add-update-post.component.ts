@@ -11,19 +11,21 @@ import { FeedService } from '../feed.service';
   styleUrls: ['./add-update-post.component.scss']
 })
 export class AddUpdatePostComponent implements OnInit {
+  protected tempTitle: string;
+  protected loading = false;
+  protected errorSend = false;
+  protected errorMessage: string;
+  protected postForm: FormGroup;
+  protected submitted = false;
+  protected minLengthTitle = 2;
+  protected maxLengthTitle = 50;
+  
   @ViewChild('UploadFileInput', { static: false }) uploadFileInput: ElementRef;
   @Input() type: string;
   @Input() show: boolean;
   @Input() post: Post;
   @Output() exit = new EventEmitter();
-  tempTitle: string;
-  loading = false;
-  errorSend = false;
-  errorMessage: string;
-  postForm: FormGroup;
-  submitted = false;
-  protected minLengthTitle = 2;
-  protected maxLengthTitle = 50;
+  
 
   constructor(private feed: FeedService, private formBuilder: FormBuilder) {
     this.successSubmitPost = this.successSubmitPost.bind(this);
@@ -56,7 +58,9 @@ export class AddUpdatePostComponent implements OnInit {
     if (this.postForm.invalid) {
       return;
     }
-
+    
+    this.loading = true;
+    
     // Organize form
     const formData = new FormData();
     formData.append('image', this.postForm.get('image').value);
