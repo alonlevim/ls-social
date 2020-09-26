@@ -7,7 +7,7 @@
       class="form-login">
 
       <div *ngIf="errorRequest">
-        <p class="error-message">Can't login right now, try in few minutes again.</p>
+        <p class="error-message">{{this.messageError}}</p>
       </div>
 
       <div class="name-group group" *ngIf="typeMethod == 'sign-up'">
@@ -39,7 +39,7 @@
           minlength="6" required />
       </div>
 
-      <button>Sign up</button>
+      <button>{{ typeMethod === 'sign-up' ? 'Sign up' : 'Login' }}</button>
     </form>
   </div>
   <p class="change-method-login"><a (click)="changeTypeMethod()">{{typeMethod == 'sign-up' ? 'Sign In' : 'Sign Up'}}</a>
