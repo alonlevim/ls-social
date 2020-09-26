@@ -1,11 +1,12 @@
 <article class="post">
   <div class="user">
     <div class="avatar"></div>
-    <p>{{post.userName}}</p>
+    <p>{{post.author}}</p>
   </div>
   <p>Update: {{post.createdAt}}</p>
+  <h3>{{post.title}}</h3>
   <p>{{post.description}}</p>
   <p>Posted: {{post.createdAt}}</p>
-  <img src={{post.img}} />
+  <img src={{post.image}} />
   <div class="settings" (click)="edit.emit()"></div>
 </article>
