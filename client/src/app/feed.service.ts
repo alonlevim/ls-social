@@ -1,15 +1,23 @@
 import { Injectable } from '@angular/core';
 
 import { ConfigService } from './../config/config.service';
+import { Post } from './post/post.component';
 
 @Injectable({
   providedIn: 'root'
 })
 export class FeedService {
+  posts: Post[] = [];
+
   constructor(private service: ConfigService) { }
 
-  getPosts() {
-    return this.service.getFeed();
+  getPosts(errCallback: Function, successCallback: Function) {
+    this.service.getFeed().subscribe((data: Post[]) => {
+      this.posts = data;
+      successCallback();
+    }, (err) => {
+      errCallback();
+    });
   }
 
 }

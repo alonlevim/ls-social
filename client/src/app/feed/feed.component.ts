@@ -17,18 +17,25 @@ export class FeedComponent implements OnInit {
   loading = false;
   error = false;
 
-  constructor(private feedService: FeedService, private auth: AuthenticationService) { }
+  constructor(private feedService: FeedService, private auth: AuthenticationService) {
+    this.successGetFeed = this.successGetFeed.bind(this);
+    this.errorGetFeed = this.errorGetFeed.bind(this);
+  }
 
   ngOnInit() {
     this.loading = true;
-    this.feedService.getPosts().subscribe((data: Post[]) => {
-      this.posts = data;
-      this.error = false;
-      this.loading = false;
-    }, (err) => {
-      this.error = true;
-      this.loading = false;
-    });
+    this.feedService.getPosts(this.errorGetFeed, this.successGetFeed);
+  }
+
+  successGetFeed() {
+    this.posts = this.feedService.posts;
+    this.error = false;
+    this.loading = false;
+  }
+
+  errorGetFeed() {
+    this.error = true;
+    this.loading = false;
   }
 
   showAddPostPopup() {
