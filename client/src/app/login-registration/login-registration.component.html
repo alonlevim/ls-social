@@ -3,60 +3,45 @@
     <div class="logo">
       <img class="logo" src="../../assets/logo.svg" />
     </div>
-    <form *ngIf="typeMethod == 'sign-in'" #loginUserForm="ngForm"
-      (ngSubmit)="loginUserForm.form.valid && onSubmit(loginUserForm.value)" class="form-login">
+    <form #userForm="ngForm" (ngSubmit)="userForm.form.valid && onSubmit(userForm.value)"
+      class="form-login">
 
       <div *ngIf="errorRequest">
         <p class="error-message">Can't login right now, try in few minutes again.</p>
       </div>
 
-      <div class="invalid-feedback" *ngIf="loginUserForm.submitted && email.invalid">
-        <p *ngIf="email.errors?.required" class="error-message">Email is required</p>
-        <div *ngIf="email.errors.email || email.errors.pattern" class="error-message">Must be a valid email address
+      <div class="name-group group" *ngIf="typeMethod == 'sign-up'">
+        <div class="invalid-feedback" *ngIf="userForm.submitted && name.invalid">
+          <p *ngIf="name.errors?.required" class="error-message">Name is required</p>
+          <div *ngIf="name.errors?.minlength" class="error-message">Name should be at least 2 characters long</div>
         </div>
-      </div>
-      <input type="email" name="email" placeholder="Email" [(ngModel)]="model.email" email required #email="ngModel"
-        pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" />
-
-      <div *ngIf="loginUserForm.submitted && password.invalid" class="invalid-feedback">
-        <div *ngIf="password.errors?.required" class="error-message">Password is required</div>
-        <div *ngIf="password.errors?.minlength" class="error-message">Password should be at least 6 characters long</div>
-      </div>
-      <input type="password" name="password" placeholder="Password" [(ngModel)]="model.password" #password="ngModel"
-        minlength="6" required />
-
-      <button>Login</button>
-    </form>
-
-    <form #userForm="ngForm" (ngSubmit)="userForm.form.valid && onSubmit(userForm.value)" class="form-login"
-      *ngIf="typeMethod == 'sign-up'">
-      
-      <div *ngIf="errorRequest">
-        <p class="error-message">Can't registration right now, try in few minutes again.</p>
+        <input type="text" name="name" placeholder="Full Name" [(ngModel)]="model.name" required #name="ngModel"
+          minlength="2" />
       </div>
 
-      <div class="invalid-feedback" *ngIf="userForm.submitted && email.invalid">
-        <p *ngIf="name.errors?.required" class="error-message">Name is required</p>
-        <div *ngIf="name.errors?.minlength" class="error-message">Name should be at least 2 characters long</div>
-      </div>
-      <input type="text" name="name" placeholder="Full Name" [(ngModel)]="model.name" required #name="ngModel" minlength="2" />
-
-      <div class="invalid-feedback" *ngIf="userForm.submitted && email.invalid">
-        <p *ngIf="email.errors?.required" class="error-message">Email is required</p>
-        <div *ngIf="email.errors.email || email.errors.pattern" class="error-message">Must be a valid email address
+      <div class="name-group group">
+        <div class="invalid-feedback" *ngIf="userForm.submitted && email.invalid">
+          <p *ngIf="email.errors?.required" class="error-message">Email is required</p>
+          <div *ngIf="email.errors.email || email.errors.pattern" class="error-message">Must be a valid email address
+          </div>
         </div>
+        <input type="email" name="email" placeholder="Email" [(ngModel)]="model.email" email required #email="ngModel"
+          pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" />
       </div>
-      <input type="email" name="email" placeholder="Email" [(ngModel)]="model.email" email required #email="ngModel"
-        pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" />
 
-      <div *ngIf="userForm.submitted && password.invalid" class="invalid-feedback">
-        <div *ngIf="password.errors?.required" class="error-message">Password is required</div>
-        <div *ngIf="password.errors?.minlength" class="error-message">Password should be at least 6 characters long</div>
+      <div class="name-group group">
+        <div *ngIf="userForm.submitted && password.invalid" class="invalid-feedback">
+          <div *ngIf="password.errors?.required" class="error-message">Password is required</div>
+          <div *ngIf="password.errors?.minlength" class="error-message">Password should be at least 6 characters long
+          </div>
+        </div>
+        <input type="password" name="password" placeholder="Password" [(ngModel)]="model.password" #password="ngModel"
+          minlength="6" required />
       </div>
-      <input type="password" name="password" placeholder="Password" [(ngModel)]="model.password" #password="ngModel"
-        minlength="6" required />
+
       <button>Sign up</button>
     </form>
   </div>
-  <p class="change-method-login"><a>{{typeMethod == 'sign-up' ? 'Sign In' : 'Sign Up'}}</a></p>
+  <p class="change-method-login"><a (click)="changeTypeMethod()">{{typeMethod == 'sign-up' ? 'Sign In' : 'Sign Up'}}</a>
+  </p>
 </section>

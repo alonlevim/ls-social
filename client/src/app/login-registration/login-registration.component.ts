@@ -31,6 +31,10 @@ export class LoginRegistrationComponent implements OnInit {
       this.auth.login(user);
     }
   }
+
+  changeTypeMethod() {
+    this.typeMethod = this.typeMethod === 'sign-up' ? 'sign-in' : 'sign-up';
+  }
 }
 
 
