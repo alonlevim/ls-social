@@ -5,12 +5,12 @@
       <div class="exit"(click)="exit.emit()">X</div>
       <form class="post-form">
         <textarea name="description" placeholder="Description">{{type == 'edit' ? post.description : null}}</textarea>
-        <div class="manage-img" *ngIf="post.img != null && post.img.trim() != ''">
-          <img src='{{post.img}}' />
+        <div class="manage-img" *ngIf=" post != undefined && post.image != null && post.image.trim() != ''">
+          <img src='{{post.image}}' />
           <button>Delete Image</button>
         </div>
         
-        <input type="file" name="image" accept="image/*" *ngIf="post.img == null || post.img.trim() == ''"/>
+        <input type="file" name="image" accept="image/*" *ngIf="post == undefined || post.image == null || post.image.trim() == ''"/>
         <button class="publish-update">{{type == 'edit' ? 'Update' : 'Publish'}}</button>
       </form>
     </div>
