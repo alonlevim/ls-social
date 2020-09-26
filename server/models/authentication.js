@@ -3,11 +3,8 @@ const jwt = require('jsonwebtoken');
 const crypto = require('crypto');
 
 const User = require('../schemas/user');
-const { decode } = require('punycode');
+const helper = require('../helper');
 
-
-const succeededStatus = { status: "ok" };
-const failedStatus = { status: "failed" };
 const minLengthPassword = 4;
 
 const getSecret = () => {
@@ -80,7 +77,7 @@ module.exports = {
             ||
             req.body.password.length < minLengthPassword
         ) {
-            return res.status(400).json(failedStatus);
+            return res.status(400).json(helper.failedStatus);
         }
 
         const { email, password } = req.body;
@@ -88,7 +85,7 @@ module.exports = {
 
         User.findOne({ email: email.toLowerCase(), password: cryptographicPassword }, (err, user) => {
             if (err) {
-                return res.status(400).json(failedStatus);
+                return res.status(400).json(helper.failedStatus);
             }
 
             // Get token by id
@@ -96,11 +93,11 @@ module.exports = {
 
             // Can't get token
             if (token === false) {
-                return res.status(400).json(failedStatus);
+                return res.status(400).json(helper.failedStatus);
             }
 
             // Return succeed status with new token
-            res.json({ ...succeededStatus, token });
+            res.json({ ...helper.succeededStatus, token });
         });
     },
 
@@ -123,7 +120,7 @@ module.exports = {
             ||
             req.body.password.length < minLengthPassword
         ) {
-            return res.status(400).json(failedStatus);
+            return res.status(400).json(helper.failedStatus);
         }
 
         const { name, email, password } = req.body;
@@ -143,9 +140,9 @@ module.exports = {
                 throw 'Can\'t get token';
             }
 
-            res.json({ ...succeededStatus, token });
+            res.json({ ...helper.succeededStatus, token });
         }).catch((e) => {
-            res.status(400).json(failedStatus);
+            res.status(400).json(helper.failedStatus);
         });
     },
 
@@ -153,7 +150,7 @@ module.exports = {
         const token = getTokenFromHeader(req);
 
         if (token == false || typeof token !== "string" || token.trim().length < 50) {
-            res.status(400).json(failedStatus);
+            res.status(400).json(helper.failedStatus);
         }
 
         // Succeeded
@@ -162,7 +159,7 @@ module.exports = {
         }
         // failed
         else {
-            res.status(400).json(failedStatus);
+            res.status(400).json(helper.failedStatus);
         }
     },
 
