@@ -10,25 +10,23 @@ import { AuthenticationService } from '../../authentication/authentication.servi
   styleUrls: ['./feed.component.scss']
 })
 export class FeedComponent implements OnInit {
-  posts = [];
   showPopup = false;
   typePopup: string;
   postToEdit;
   loading = false;
   error = false;
 
-  constructor(private feedService: FeedService, private auth: AuthenticationService) {
+  constructor(protected feed: FeedService, private auth: AuthenticationService) {
     this.successGetFeed = this.successGetFeed.bind(this);
     this.errorGetFeed = this.errorGetFeed.bind(this);
   }
 
   ngOnInit() {
     this.loading = true;
-    this.feedService.getPosts(this.errorGetFeed, this.successGetFeed);
+    this.feed.getPosts(this.errorGetFeed, this.successGetFeed);
   }
 
   successGetFeed() {
-    this.posts = this.feedService.posts;
     this.error = false;
     this.loading = false;
   }
