@@ -1,3 +1,4 @@
+import { Post } from './../post/post.component';
 import { Component, OnInit } from '@angular/core';
 
 import { FeedService } from '../feed.service';
@@ -20,7 +21,7 @@ export class FeedComponent implements OnInit {
 
   ngOnInit() {
     this.loading = true;
-    this.feedService.getPosts().subscribe((data: any[]) => {
+    this.feedService.getPosts().subscribe((data: Post[]) => {
       this.posts = data;
       this.error = false;
       this.loading = false;
