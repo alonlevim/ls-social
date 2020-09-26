@@ -1,17 +1,38 @@
 const Authentication = require('../controllers/Authentication');
 const post = require('../schemas/post');
+const user = require('../schemas/user');
 const helper = require('../helper');
 
-const getFeed = (req, res) => {
-    res.json([{
-        idUser: 1,
-        author: "Alon",
-        title: "Title",
-        description: 'It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using \'Content here, content here\', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for \'lorem ipsum\' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).',
-        image: 'https://image.cnbcfm.com/api/v1/image/105828578-1554223245858gettyimages-149052633.jpeg?v=1554223281&w=740&h=416',
-        createdAt: 1600963765207,
-        updatedAt: 1600963765207
-    }]);
+const getFeed = async (req, res) => {
+    post.find().then(async (posts) => {
+        // Join user name by id
+        const newPosts = await Promise.all(posts.map(async post => {
+
+            // Get name author
+            const author = await user.findById(post.author).then(user => user.name);
+            
+            // Set in new object
+            const newObjPost = {
+                _id: post._id,
+                author,
+                title: post.title,
+                description: post.description,
+                createdAt: post.createdAt
+            };
+            
+            if (post.updatedAt)
+                newObjPost.updatedAt = post.updatedAt;
+
+            if (post.image)
+                newObjPost.image = post.image;
+            
+            return newObjPost;
+        }));
+        
+        res.json(newPosts);
+    }).catch((err) => {
+        req.status(400).json({ status: "Can't get feed" });
+    });
 };
 
 module.exports = {
