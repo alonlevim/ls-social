@@ -67,6 +67,7 @@ header {
                 padding: 10px 0;
                 text-align: center;
                 border-radius: 5px;
+                color: transparent;
 
                 transition: 0.5s all;
 
@@ -75,10 +76,13 @@ header {
                 }
             }
 
-            &:hover .dropdown-logout, &:active .dropdown-logout, &:focus .dropdown-logout {
-                opacity: 1;
-                height: 42px;
-                z-index: 1;
+            &:hover, &:active, &:focus {
+                .dropdown-logout {
+                    opacity: 1;
+                    height: 42px;
+                    z-index: 1;
+                    color: black;
+                }
             }
         }
     }
