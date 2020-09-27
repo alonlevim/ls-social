@@ -14,7 +14,7 @@ First clone my project.
 git clone https://github.com/alonlevim/ls-social.git
 ```
 
-Then go to root poject:
+Then go to root project:
 
 ```
 cd ls-social
@@ -22,15 +22,15 @@ cd ls-social
 
 Go to `server`
 
-and add .env file with content:
+and add .env file with content and enter your AWS details:
 
 ```
-SECRET=
-DB_URL=
+SECRET=some-secret
+DB_URL=mongodb://localhost/some-url
 
-ACCESS_KEY_ID=
-SECRET_ACCESS_KEY=
-BUCKET_NAME=
+ACCESS_KEY_ID=<YOUR_AWS_ACCESS_KEY_ID>
+SECRET_ACCESS_KEY=<YOUR_AWS_SECRET_ACCESS_KEY>
+BUCKET_NAME=<YOUR_AWS_BUCKET_NAME>
 ```
 
 Then run:
@@ -54,7 +54,7 @@ Need to run two Terminals:
 
 #### Server side:
 
-Run:
+From `root folder` run:
 
 ```
 cd server && npm run start
