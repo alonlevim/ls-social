@@ -7,6 +7,7 @@ const PostSchema = new Schema({
     description: { type: String, trim: true },
     image: { type: String, trim: true },
     keyImage: { type: String, trim: true },
+    likes: [{ type: Schema.Types.ObjectId }],
     createdAt: { type: Date, require: true },
     updatedAt: { type: Date }
 });

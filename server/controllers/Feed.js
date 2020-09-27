@@ -14,5 +14,9 @@ module.exports = {
 
     deletePost: (req, res) => {
         feed.deletePost(req, res)
+    },
+
+    toggleLikePost: (req, res) => {
+        feed.toggleLikePost(req, res)
     }
 }

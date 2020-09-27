@@ -1,6 +1,8 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Output, EventEmitter } from '@angular/core';
+
 import { timeSince } from '../../helper/dateHelper';
+import { FeedService } from '../feed.service';
 
 export class Post {
   public _id: string;
@@ -12,6 +14,8 @@ export class Post {
   public createdAt: Date;
   public updatedAt: Date;
   public admin: boolean;
+  public likes: number;
+  public didILike: boolean;
 }
 
 @Component({
@@ -25,7 +29,7 @@ export class PostComponent implements OnInit {
   createdAt: string;
   updatedAt: string = '';
 
-  constructor() { }
+  constructor(private feed: FeedService) { }
 
   ngOnInit() {
     this.convertDateToString();
@@ -40,6 +44,11 @@ export class PostComponent implements OnInit {
     
     if (this.post.updatedAt)
       this.updatedAt = timeSince(new Date(this.post.updatedAt));
+  }
+
+  clickLike() {
+    const like = !this.post.didILike;
+    this.feed.toggleLikePost(like, this.post);
   }
 
 }

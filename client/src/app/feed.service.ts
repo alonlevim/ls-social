@@ -59,4 +59,13 @@ export class FeedService {
       errCallback();
     });
   }
+
+  toggleLikePost(like: boolean, post: Post) {
+    this.service.putToggleLikePost({like, _id: post._id}).subscribe((data: any) => {
+      if( data.status === "ok" ) {
+        post.didILike = like;
+        post.likes = data.likes;
+      } 
+    });
+  }
 }

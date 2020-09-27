@@ -28,7 +28,10 @@ const getFeed = async (req, res) => {
                 title: post.title,
                 description: post.description,
                 createdAt: post.createdAt,
-                admin: userId == post.author
+                admin: userId == post.author,
+                likes: post.likes.length,
+                // If user did like
+                didILike: post.likes.filter(like => like == userId).length > 0
             };
 
             if (post.updatedAt)
@@ -168,5 +171,31 @@ module.exports = {
         }).catch((e) => {
             res.status(400).json(helper.failedStatus);
         });
+    },
+
+    toggleLikePost: async (req, res) => {
+        const userId = Authentication.returnIdByToken(req);
+
+        if (typeof req.body.like === "undefined" || req.body.like === null || typeof req.body._id === "undefined" || req.body._id === null) {
+            return res.status(400).json(helper.failedStatus);
+        }
+
+        const postById = await post.findById(req.body._id);
+
+        if (postById.likes.filter(like => like == userId).length > 0) {
+            const likes = postById.likes.filter(like => like != userId);
+            post.findByIdAndUpdate(req.body._id, { $pullAll: { likes: [userId] } }).then(() => {
+                return res.json({ status: "ok", likes: postById.likes.length-1 });
+            }).catch((e) => {
+                return res.status(400).json({ message: "Can't update like" })
+            });
+        }
+        else {
+            post.findByIdAndUpdate(req.body._id, { $push: { likes: [userId] } }).then((post) => {
+                return res.json({ status: "ok", likes: postById.likes.length+1 });
+            }).catch((e) => {
+                return res.status(400).json({ "message": "Can't update like" })
+            });
+        }
     }
 };

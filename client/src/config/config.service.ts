@@ -73,6 +73,16 @@ export class ConfigService {
     return this.http.post<NewToken>(this.configUrl + addUserApi, { ...user });
   }
 
+  putToggleLikePost(data: object) {
+    const toggleLikePost = 'api/toggle-like-post';
+    const options = this.getOptions();
+
+    return this.http.put(this.configUrl + toggleLikePost, data, options).pipe(catchError((error: HttpErrorResponse) => {
+      this.checkIllegalResponse(error);
+      return throwError(error.error.message || 'Something bad happened; please try again later.');
+    }));
+  }
+
   private getOptions(withoutContentType = false) {
     const params = new HttpParams();
     return {
