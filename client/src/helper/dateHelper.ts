@@ -24,7 +24,7 @@ const timeSince = (date: Date) => {
     if (interval > 1) {
         return Math.floor(interval) + " minutes ago";
     }
-    return Math.floor(seconds) + " seconds ago";
+    return Math.floor(seconds) > 0 ? Math.floor(seconds) + " seconds ago" : "now";
 }
 
 export { timeSince };
