@@ -1,5 +1,5 @@
 # ls-social
-
+![](./resource/image/ls-social.jpg)
 ## Live demo
 
 [Demo](http://ls-social.work-alon.com/)
