@@ -3,10 +3,10 @@
     <div class="avatar"></div>
     <p>{{post.author}}</p>
   </div>
-  <p *ngIf="post.updatedAt">Update: {{post.updatedAt}}</p>
+  <p *ngIf="post.updatedAt">Update: {{updatedAt}}</p>
   <h3 class="title">{{post.title}}</h3>
   <p>{{post.description}}</p>
-  <p>Posted: {{post.createdAt}}</p>
+  <p>Posted: {{createdAt}}</p>
   <img src={{post.image}} />
   <div *ngIf="post.admin" class="settings" (click)="edit.emit()"></div>
 </article>
