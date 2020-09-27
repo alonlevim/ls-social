@@ -14,6 +14,7 @@ export class FeedComponent implements OnInit {
   typePopup: string;
   postToEdit;
   loading = false;
+  loadingMorePosts = false;
   error = false;
 
   constructor(public feed: FeedService, private auth: AuthenticationService) {
@@ -29,11 +30,13 @@ export class FeedComponent implements OnInit {
   successGetFeed() {
     this.error = false;
     this.loading = false;
+    this.loadingMorePosts = false;
   }
 
   errorGetFeed() {
     this.error = true;
     this.loading = false;
+    this.loadingMorePosts = false;
   }
 
   showAddPostPopup() {
@@ -56,4 +59,10 @@ export class FeedComponent implements OnInit {
     this.auth.logout();
   }
 
+  onScroll() {
+    if (!this.loadingMorePosts) {
+      this.loadingMorePosts = true;
+      this.feed.getMorePosts(this.errorGetFeed, this.successGetFeed);
+    }
+  }
 }

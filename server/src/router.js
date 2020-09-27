@@ -8,7 +8,7 @@ module.exports = (router) => {
     // Middleware
     router.use(Authentication.verifyAuth);
 
-    router.get('/feed', Feed.getFeed);
+    router.post('/feed', Feed.getFeed);
 
     router.post('/add-post', singleUpload, Feed.addPost);
     router.put('/update-post', singleUpload, Feed.updatePost);

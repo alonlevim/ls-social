@@ -18,11 +18,11 @@ export class ConfigService {
   }
 
   // Feed
-  getFeed() {
+  getFeed(ids?: string[]) {
     const feedApi = 'api/feed';
     const options = this.getOptions();
 
-    return this.http.get(this.configUrl + feedApi, options).pipe(catchError(this.handleError));
+    return this.http.post(this.configUrl + feedApi, { ids }, options).pipe(catchError(this.handleError));
   }
 
   postAddPost(post: FormData) {

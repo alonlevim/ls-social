@@ -6,9 +6,16 @@ const { deleteFile } = require('../services/upload');
 
 const getFeed = async (req, res) => {
     const userId = Authentication.returnIdByToken(req);
-    
+    let query = {};
+    if (typeof req.body.ids !== "undefined" && req.body.ids.length > 0) {
+        query = {
+            '_id': {
+                $not: { $in: req.body.ids }
+            }
+        };
+    }
 
-    post.find().sort({ field: 'asc', createdAt: -1 }).then(async (posts) => {
+    post.find(query).sort({ field: 'asc', createdAt: -1 }).limit(5).then(async (posts) => {
         // Join user name by id
         const newPosts = await Promise.all(posts.map(async post => {
 
@@ -89,7 +96,7 @@ module.exports = {
     updatePost: async (req, res) => {
         const userId = Authentication.returnIdByToken(req);
         // Only author can update this post
-        if( await post.findOne({_id: req.body._id, author: userId}).catch(err=> null) === null ) {
+        if (await post.findOne({ _id: req.body._id, author: userId }).catch(err => null) === null) {
             // this user can't update this post
             return res.status(400).json(helper.failedStatus);
         }
@@ -143,14 +150,14 @@ module.exports = {
         const userId = Authentication.returnIdByToken(req);
 
         // Only author can delete this post
-        if( await post.findOne({_id: id, author: userId}).catch(err=> null) === null ) {
+        if (await post.findOne({ _id: id, author: userId }).catch(err => null) === null) {
             // this user can't delete this post
             return res.status(400).json(helper.failedStatus);
         }
 
         // Key image to delete it from aws
         const keyImage = await post.findById(id).then(post => post.keyImage);
-        
+
         // Delete image
         if (await !deleteFile(keyImage)) {
             return res.status(400).json({ message: "Can't delete image." });

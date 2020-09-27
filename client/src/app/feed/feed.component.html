@@ -17,7 +17,7 @@
   </div>
 </header>
 
-<section class="feed">
+<section class="feed" infiniteScroll [fromRoot]="true" (scrolled)="onScroll()" >
   <div class="container">
     <div class="content-container">
       <h1 class="feed-title">Feed</h1>
@@ -26,8 +26,8 @@
       <p *ngIf="!loading && !error && feed.posts.length === 0" class="error">There is no posts in feed</p>
     </div>
 
-    <app-loading *ngIf="loading"></app-loading>
     <app-post *ngFor="let post of feed.posts" [post]="post" (edit)="showEditPostPopup(post)"></app-post>
+    <app-loading *ngIf="loading || loadingMorePosts"></app-loading>
   </div>
 </section>
 

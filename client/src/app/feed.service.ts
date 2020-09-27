@@ -47,4 +47,16 @@ export class FeedService {
     });
   }
 
+  getMorePosts(errCallback: Function, successCallback: Function) {
+    const ids = this.posts.map(({ _id }) => _id);
+
+    this.service.getFeed(ids).subscribe((data: Post[]) => {
+      data.forEach(item => {
+        this.posts.push(item);
+      });
+      successCallback();
+    }, (err) => {
+      errCallback();
+    });
+  }
 }
