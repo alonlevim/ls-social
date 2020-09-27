@@ -1,3 +1,4 @@
+import { environment } from './../environments/environment';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse, HttpHeaders, HttpParams } from '@angular/common/http';
 import { throwError } from 'rxjs';
@@ -11,7 +12,7 @@ import { NewToken } from './../authentication/newToken';
   providedIn: 'root'
 })
 export class ConfigService {
-  private configUrl = "http://localhost:8081/";
+  private configUrl = environment.production ? '/' : "http://localhost:8081/";
 
   constructor(private http: HttpClient, private token: TokenService) {
     this.handleError = this.handleError.bind(this);
