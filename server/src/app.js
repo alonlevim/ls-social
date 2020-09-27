@@ -27,7 +27,7 @@ app.post('/add-user', Authentication.addUser);
 
 // Single page application
 app.get('/*', (req, res) => {
-    res.sendFile(`${process.cwd()}\\dist\\index.html`)
+    res.sendFile(`${process.cwd()}/dist/index.html`)
 });
 
 // Catch 404
