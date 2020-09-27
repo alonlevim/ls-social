@@ -12,6 +12,7 @@ export class LoginRegistrationComponent implements OnInit {
   typeMethod = 'sign-up';
   errorRequest = false;
   messageError: string;
+  loading: boolean = false;
 
   constructor(private auth: AuthenticationService) { }
 
@@ -20,11 +21,13 @@ export class LoginRegistrationComponent implements OnInit {
 
   onSubmit(user: User) {
     this.errorRequest = false;
-    
+    this.loading = true;
+
     if (this.typeMethod === "sign-up") {
       this.auth.registration(user,
         () => {
           // Error while sent request
+          this.loading = false;
           this.errorRequest = true;
           this.messageError = "Can't sign up right now, try in few minutes again.";
         });
@@ -32,6 +35,7 @@ export class LoginRegistrationComponent implements OnInit {
     else if (this.typeMethod === "sign-in") {
       this.auth.login(user, () => {
           // Error while sent request
+          this.loading = false;
           this.errorRequest = true;
           this.messageError = "Your account or password is incorrect.";
       });
