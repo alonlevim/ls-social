@@ -88,7 +88,7 @@ module.exports = {
         const cryptographicPassword = cryptographic(password);
 
         User.findOne({ email: email.toLowerCase(), password: cryptographicPassword }, (err, user) => {
-            if (err) {
+            if (err || !user) {
                 return res.status(400).json(helper.failedStatus);
             }
 
