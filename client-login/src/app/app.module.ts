@@ -30,10 +30,6 @@ import { AuthenticationService } from '../authentication/authentication.service'
 })
 export class AppModule { 
   constructor(private router: Router, private authentication: AuthenticationService) {
-    router.events.subscribe((val) => {
-      if( val instanceof NavigationEnd ){
-        this.authentication.checkAuth(val.url);
-      }
-  });
+    router.events.subscribe((val) => {});
   }
 }
