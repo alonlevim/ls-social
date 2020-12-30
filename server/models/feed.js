@@ -5,7 +5,7 @@ const helper = require('../helper');
 const { deleteFile } = require('../services/upload');
 
 const getFeed = async (req, res) => {
-    const userId = Authentication.returnIdByToken(req);
+    const userId = Authentication.returnIdByToken(req ,res);
     let query = {};
     if (typeof req.body.ids !== "undefined" && req.body.ids.length > 0) {
         query = {
@@ -66,7 +66,7 @@ module.exports = {
             return res.status(400).json({ message: "Missing details" });
         }
 
-        const userId = Authentication.returnIdByToken(req);
+        const userId = Authentication.returnIdByToken(req, res);
 
         if (!userId) {
             return res.status(400).json(helper.failedStatus);
@@ -97,7 +97,7 @@ module.exports = {
     },
 
     updatePost: async (req, res) => {
-        const userId = Authentication.returnIdByToken(req);
+        const userId = Authentication.returnIdByToken(req, res);
         // Only author can update this post
         if (await post.findOne({ _id: req.body._id, author: userId }).catch(err => null) === null) {
             // this user can't update this post
@@ -150,7 +150,7 @@ module.exports = {
 
     deletePost: async (req, res) => {
         const id = req.params._id;
-        const userId = Authentication.returnIdByToken(req);
+        const userId = Authentication.returnIdByToken(req, res);
 
         // Only author can delete this post
         if (await post.findOne({ _id: id, author: userId }).catch(err => null) === null) {
@@ -174,7 +174,7 @@ module.exports = {
     },
 
     toggleLikePost: async (req, res) => {
-        const userId = Authentication.returnIdByToken(req);
+        const userId = Authentication.returnIdByToken(req, res);
 
         if (typeof req.body.like === "undefined" || req.body.like === null || typeof req.body._id === "undefined" || req.body._id === null) {
             return res.status(400).json(helper.failedStatus);

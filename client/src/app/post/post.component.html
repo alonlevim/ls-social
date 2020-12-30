@@ -9,7 +9,7 @@
   <p>Posted: {{createdAt}}</p>
   <img src={{post.image}} />
   <div class="likes">
-    <img [ngClass]="{'active': post.didILike}" class="like-button" src="../../assets/like.svg" (click)="clickLike()" />
+    <img [ngClass]="{'active': post.didILike}" class="like-button" src="./assets/like.svg" (click)="clickLike()" />
     <span *ngIf="post.likes > 0">{{post.likes}}</span>
   </div>
   <div *ngIf="post.admin" class="settings" (click)="edit.emit()"></div>

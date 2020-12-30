@@ -7,6 +7,11 @@ const helper = require('../helper');
 
 const minLengthPassword = 4;
 
+const failedRequest = (req, res) => {
+    req.session.destroy();
+    return res.status(400).json(helper.failedStatus);
+}
+
 const getSecret = () => {
     return process.env.SECRET || 'secret';
 }
@@ -45,21 +50,13 @@ const tokenVerification = (token) => {
 const cryptographic = (password) => crypto.createHmac('sha256', password)
     .digest('hex');
 
-const getTokenFromHeader = (req) => {
-    if (typeof req.headers['authorization'] === "undefined"
-        ||
-        req.headers['authorization'].trim() === ""
-        ||
-        !req.headers['authorization'].includes('bearer')
-    ) {
-        return false;
+const checkValidationTokenInReq = (req, res) => {
+    if (typeof req.session === "undefined" || typeof req.session.token !== "string" || req.session.token.trim().length < 50 || !tokenVerification(req.session.token)) {
+        return failedRequest(req, res);
     }
 
-    const authorizationHeader = req.headers['authorization'];
-
-    // After bearer
-    return authorizationHeader.split(" ")[1];
-};
+    return true;
+}
 
 module.exports = {
     login: (req, res) => {
@@ -81,7 +78,7 @@ module.exports = {
             ||
             req.body.password.length < minLengthPassword
         ) {
-            return res.status(400).json(helper.failedStatus);
+            return failedRequest(req, res);
         }
 
         const { email, password } = req.body;
@@ -89,7 +86,7 @@ module.exports = {
 
         User.findOne({ email: email.toLowerCase(), password: cryptographicPassword }, (err, user) => {
             if (err || !user) {
-                return res.status(400).json(helper.failedStatus);
+                return failedRequest(req, res);
             }
 
             // Get token by id
@@ -97,11 +94,12 @@ module.exports = {
 
             // Can't get token
             if (token === false) {
-                return res.status(400).json(helper.failedStatus);
+                return failedRequest(req, res);
             }
 
-            // Return succeed status with new token
-            res.json({ ...helper.succeededStatus, token });
+            req.session.token = token;
+            // Return succeed status
+            res.json({ ...helper.succeededStatus });
         });
     },
 
@@ -130,7 +128,7 @@ module.exports = {
             ||
             req.body.password.length < minLengthPassword
         ) {
-            return res.status(400).json(helper.failedStatus);
+            return failedRequest(req, res);
         }
 
         const { name, email, password } = req.body;
@@ -150,38 +148,54 @@ module.exports = {
                 throw 'Can\'t get token';
             }
 
-            res.json({ ...helper.succeededStatus, token });
+            req.session.token = token;
+            res.json({ ...helper.succeededStatus });
         }).catch((e) => {
-            res.status(400).json(helper.failedStatus);
+            return failedRequest(req, res);
         });
     },
 
-    verifyAuth: (req, res, next) => {
-        const token = getTokenFromHeader(req);
-
-        if (token == false || typeof token !== "string" || token.trim().length < 50) {
-            return res.status(400).json(helper.failedStatus);
+    verifyAuth: async (req, res, next) => {
+        // Validation token from req
+        const validationTokenInReq = checkValidationTokenInReq(req, res);
+        if (validationTokenInReq !== true) {
+            return validationTokenInReq;
         }
 
-        // Succeeded
-        if (tokenVerification(token)) {
-            next();
-        }
-        // failed
-        else {
-            return res.status(400).json(helper.failedStatus);
-        }
-    },
-
-    returnIdByToken: (req) => {
-        const token = getTokenFromHeader(req);
-
-        if (token == false || typeof token !== "string" || token.trim().length < 50) {
-            return false;
-        }
+        const token = req.session.token;
 
         const decoded = decodedToken(token);
 
-        return typeof decoded._id !== "undefined" ? decoded._id : false;
+        if (typeof decoded === "undefined" || decoded === null || typeof decoded._id !== "string") {
+            return failedRequest(req, res);
+        }
+
+        // check in db
+        const isThereUser = await User.findById(decoded._id).then(value => value !== null);
+
+        if (!isThereUser) {
+            return failedRequest(req, res);
+        }
+
+        // Succeeded
+        next();
+    },
+
+    returnIdByToken: (req, res) => {
+        // Validation token from req
+        const validationTokenInReq = checkValidationTokenInReq(req, res);
+        if (validationTokenInReq !== true) {
+            return validationTokenInReq;
+        }
+
+        const token = req.session.token;
+
+        const decoded = decodedToken(token);
+
+        if (typeof decoded === "undefined" || typeof decoded._id !== "string") {
+            return failedRequest(req, res);
+        }
+
+        return decoded._id;
     }
 };

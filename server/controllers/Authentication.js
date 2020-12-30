@@ -13,7 +13,13 @@ module.exports = {
         authentication.verifyAuth(req, res, next);
     },
 
-    returnIdByToken: (req) => {
-        return authentication.returnIdByToken(req);
-    } 
+    returnIdByToken: (req, res) => {
+        const id = authentication.returnIdByToken(req, res);
+
+        if (typeof id !== "string") {
+            return false;
+        }
+
+        return id;
+    }
 };

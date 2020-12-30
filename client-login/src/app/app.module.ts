@@ -6,19 +6,14 @@ import { HttpClientModule } from '@angular/common/http';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 
 import { AppComponent } from './app.component';
-import { FeedComponent } from './feed/feed.component';
-import { PostComponent } from './post/post.component';
-import { AddUpdatePostComponent } from './add-update-post/add-update-post.component';
-import { LoadingComponent } from './loading/loading.component';
+import { LoginRegistrationComponent } from './login-registration/login-registration.component';
+
 import { AuthenticationService } from '../authentication/authentication.service';
 
 @NgModule({
   declarations: [				
     AppComponent,
-      FeedComponent,
-      PostComponent,
-      AddUpdatePostComponent,
-      LoadingComponent
+      LoginRegistrationComponent,
    ],
   imports: [
     BrowserModule,
@@ -27,7 +22,7 @@ import { AuthenticationService } from '../authentication/authentication.service'
     HttpClientModule,
     InfiniteScrollModule,
     RouterModule.forRoot([
-      { path: '', component: FeedComponent },
+      { path: '', component: LoginRegistrationComponent },
     ])
   ],
   providers: [],
@@ -35,6 +30,10 @@ import { AuthenticationService } from '../authentication/authentication.service'
 })
 export class AppModule { 
   constructor(private router: Router, private authentication: AuthenticationService) {
-    router.events.subscribe((val) => {});
+    router.events.subscribe((val) => {
+      if( val instanceof NavigationEnd ){
+        this.authentication.checkAuth(val.url);
+      }
+  });
   }
 }
